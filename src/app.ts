@@ -3,7 +3,7 @@ import type { Request, Response } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { errorMiddleware } from './core/middlewares/error.middleware';
-import { loadVersionedRoutes } from './core/utils/versionedRouter';
+import { loadVersionedRoutes } from './core/utils/versioned.router';
 
 const app = express();
 
@@ -21,6 +21,7 @@ app.get('/health', (req: Request, res: Response) => {
 // The modules themselves handle versioned routing (v1/v2) and default version
 app.use('/api/users', loadVersionedRoutes('users'));
 app.use('/api/auth', loadVersionedRoutes('auth'));
+app.use('/api/venues', loadVersionedRoutes('venues'));
 // add more modules here
 
 // --- 404 Handler ---

@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import logger from '@core/utils/logger';
+import logger from '@core/logger';
 
 dotenv.config();
 
@@ -98,10 +98,10 @@ const config: AppConfig = {
   nodeEnv: process.env.NODE_ENV || 'development',
   enableCache: process.env.ENABLE_CACHE === 'true',
   jwt: {
-    accessSecret: String(process.env.JWT_ACCESS_SECRET) || 'your_access_secret',
-    refreshSecret: String(process.env.JWT_REFRESH_SECRET) || 'your_refresh_secret',
-    accessExpiresIn: String(process.env.JWT_ACCESS_EXPIRES_IN) || '15m',
-    refreshExpiresIn: String(process.env.JWT_REFRESH_EXPIRES_IN) || '7d',
+    accessSecret: process.env.JWT_ACCESS_SECRET || 'your_access_secret',
+    refreshSecret: process.env.JWT_REFRESH_SECRET || 'your_refresh_secret',
+    accessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
   },
   redis:{
     host: process.env.REDIS_HOST || 'localhost',
@@ -120,9 +120,11 @@ const envVariables = [
   { name: 'DB_PORT', value: dbConfig.port || 'N/A' },
   { name: 'DB_USER', value: dbConfig.username || 'N/A' },
   { name: 'DB_NAME', value: dbConfig.database || 'N/A' },
+  { name: 'DB_PASSWORD', value: dbConfig.password || 'N/A' },
   { name: 'JWT_ACCESS_SECRET', value: config.jwt.accessSecret },
   { name: 'JWT_REFRESH_SECRET', value: config.jwt.refreshSecret },
-  { name: 'JWT_ACCESS_EXPIRES_IN', value: config.jwt.accessExpiresIn }
+  { name: 'JWT_ACCESS_EXPIRES_IN', value: config.jwt.accessExpiresIn },
+  { name: 'JWT_REFRESH_EXPIRES_IN', value: config.jwt.refreshExpiresIn }
 ]
 if(config.enableCache){
   envVariables.push({ name: 'REDIS_HOST', value: config.redis?.host || 'N/A' });

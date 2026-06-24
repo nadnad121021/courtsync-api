@@ -3,13 +3,14 @@ import jwt from 'jsonwebtoken';
 import { UnauthorizedException } from '@core/exceptions/http.exception';
 import config  from '@config';
 import { UserRepository } from "@modules/users/user.repository"
-import { RequestWithUser } from '@core/interfaces/auth.interface';
+import { RequestWithUser } from '@modules/auth/auth.interface';
 import { verifyAccessToken } from '@core/utils/jwt';
 
 export const authMiddleware = (required = true) => {
   return async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const authHeader = req.headers.authorization;
+      console.log("🚀 ~ authMiddleware ~ authHeader:", authHeader)
 
       if (!authHeader) {
         if (!required) return next();
@@ -25,6 +26,7 @@ export const authMiddleware = (required = true) => {
       }
       const userRepo = new UserRepository();
       const user = await userRepo.findById(decoded.userData.id);
+      console.log("🚀 ~ authMiddleware ~ user:", user)
       req.user = user;
       req.token = authHeader;
 

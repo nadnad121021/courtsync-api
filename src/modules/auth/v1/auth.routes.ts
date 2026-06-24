@@ -9,6 +9,6 @@ const router = Router();
 const controller = new AuthController();
 
 router.post("/login", validateDto(LoginDto), controller.login);
-router.get("/me", authMiddleware, controller.me);
+router.get("/me", authMiddleware(true), controller.me);
 
 export default router;

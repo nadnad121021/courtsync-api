@@ -1,0 +1,47 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: redis_container
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+  # postgres:
+  #   image: postgres:latest
+  #   container_name: postgres_container
+  #   environment:
+  #     POSTGRES_DB: courtsync
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #   ports:
+  #     - "5433:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   restart: always
+  app:
+    build: .
+    container_name: courtsync_api_container
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - ENABLE_CACHE='true'
+      - DB_TYPE=postgres
+      - DB_HOST=host.docker.internal
+      - DB_NAME=courtsync_db
+      - DB_PASSWORD=password123
+      - DB_USER=postgres
+      - DB_PORT=5432
+      - JWT_ACCESS_SECRET='your_access_secret'
+      - JWT_REFRESH_SECRET='your_refresh_secret'
+      - JWT_ACCESS_EXPIRES_IN=1d
+      - JWT_REFRESH_EXPIRES_IN=7d
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    restart: always
+
+volumes:
+  redis_data:

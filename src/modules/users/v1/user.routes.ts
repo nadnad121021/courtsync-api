@@ -9,9 +9,8 @@ const controller = new UserController();
 
 // Protected routes
 router.get('/',authMiddleware(), controller.getUsers);
-router.get('/testing', controller.testing);
 router.get('/:id',authMiddleware(), controller.getUser);
-router.post('/', authMiddleware(), validateDto(CreateUserDto), controller.createUser);
+router.post('/', validateDto(CreateUserDto), controller.createUser);
 router.put('/:id', authMiddleware(), validateDto(UpdateUserDto, true), controller.updateUser);
 router.delete('/:id', authMiddleware(), controller.deleteUser);
 export default router;

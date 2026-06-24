@@ -1,18 +1,18 @@
 import jwt from 'jsonwebtoken';
 import config from '@config';
-import { AuthTokenPayload, JWTDecoded } from '@core/interfaces/auth.interface';
+import { AuthTokenPayload, JWTDecoded } from '@modules/auth/auth.interface';
 
 export function generateAccessToken(payload: { userData: AuthTokenPayload }) {
-  //@ts-ignore
+  // @ts-ignore
   return jwt.sign(payload, config.jwt.accessSecret, {
-    expiresIn: config.jwt.accessExpiresIn || '1d',
+    expiresIn: config.jwt.accessExpiresIn?.trim() || '1d',
   });
 }
 
 export function generateRefreshToken(payload: { userData: AuthTokenPayload }) {
   //@ts-ignore
   return jwt.sign(payload, config.jwt.refreshSecret, {
-    expiresIn: config.jwt.refreshExpiresIn || '7d',
+    expiresIn: config.jwt.refreshExpiresIn?.trim() || '7d',
   });
 }
 
