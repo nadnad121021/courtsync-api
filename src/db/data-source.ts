@@ -33,6 +33,11 @@ if (dbConfig.type === 'mongodb') {
     password: dbConfig.password,
     database: dbConfig.database,
     url: dbConfig.url,
+    ssl: process.env.NODE_ENV === 'production'
+    ? {
+        rejectUnauthorized: false,
+      }
+    : false,
   };
 }
 
