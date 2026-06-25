@@ -14,7 +14,13 @@ app.use(morgan('dev'));
 
 // --- Health check route ---
 app.get('/health', (req: Request, res: Response) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString() , 
+    about: `This is a sample API built with Express and TypeScript. 
+    It demonstrates versioned routing, error handling, and basic middleware usage. 
+    This API is deployed on AWS to practice CI/CD pipelines and containerization.
+    ` });
 });
 
 // --- Feature Routes ---
