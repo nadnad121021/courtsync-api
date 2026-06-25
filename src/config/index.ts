@@ -6,6 +6,7 @@ dotenv.config();
 export type DatabaseType = 'postgres' | 'mysql' | 'mongodb';
 
 export interface DatabaseConfig {
+  nodeEnv: string;
   type: DatabaseType;
   host?: string;
   port?: number;
@@ -20,11 +21,12 @@ export interface DatabaseConfig {
 export const getDatabaseConfig = (): DatabaseConfig => {
   const dbType = (process.env.DB_TYPE || 'postgres') as DatabaseType;
   const nodeEnv = process.env.NODE_ENV || 'development';
-  const dbSync = process.env.DB_SYNC === 'true';
+  const dbSync = process.env.DB_SYNC === 'false';
   const dbLogging = process.env.DB_LOGGING === 'true';
 
   const baseConfig = {
-    synchronize: dbSync,
+    nodeEnv,
+    synchronize: false, // Always set to false in production for safety
     logging: dbLogging,
   };
 

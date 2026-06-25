@@ -6,13 +6,18 @@ import { Client } from 'pg';
 import { Venue } from '@modules/venues/venue.entity';
 
 const dbConfig = getDatabaseConfig();
+const nodeEnv = dbConfig.nodeEnv;
 
 const baseOptions = {
   synchronize: dbConfig.synchronize,
   logging: dbConfig.logging,
   entities: [User,Venue],
-  migrations: ['src/db/migrations/**/*.ts'],
-  subscribers: ['src/db/subscribers/**/*.ts'],
+  migrations: nodeEnv === 'development'
+    ? ['src/db/migrations/**/*.ts']
+    : ['dist/db/migrations/**/*.js'],
+  subscribers: nodeEnv === 'development'
+    ? ['src/db/subscribers/**/*.ts']
+    : ['dist/db/subscribers/**/*.js'],
 };
 
 let dataSourceOptions: any = {};
@@ -33,11 +38,12 @@ if (dbConfig.type === 'mongodb') {
     password: dbConfig.password,
     database: dbConfig.database,
     url: dbConfig.url,
-    ssl: process.env.NODE_ENV === 'production'
+    ssl: nodeEnv === 'production'
     ? {
         rejectUnauthorized: false,
       }
     : false,
+    migrationsRun: nodeEnv === 'production', // Automatically run migrations in production
   };
 }
 
