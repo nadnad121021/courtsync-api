@@ -3,7 +3,11 @@ import { CreateBookingDto, UpdateBookingDto } from './booking.dto';
 
 class BookingService {
   async findAll() {
-    return BookingRepository.find();
+    return BookingRepository.find({
+      order: {
+        createdAt: 'DESC',
+      },
+    });
   }
 
   async findById(id: string) {
@@ -13,13 +17,13 @@ class BookingService {
   }
 
   async create(payload: CreateBookingDto) {
-    const data = BookingRepository.create(payload);
+    const booking = BookingRepository.create(payload as any);
 
-    return BookingRepository.save(data);
+    return BookingRepository.save(booking);
   }
 
   async update(id: string, payload: UpdateBookingDto) {
-    await BookingRepository.update(id, payload);
+    await BookingRepository.update(id, payload as any);
 
     return this.findById(id);
   }

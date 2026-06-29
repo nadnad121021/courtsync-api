@@ -17,7 +17,22 @@ export const authMiddleware = (required = true) => {
         throw new UnauthorizedException('Missing authorization header');
       }
 
-      const decoded = verifyAccessToken(authHeader);
+      let token: string;
+
+      // Support:
+      // Authorization: Bearer <token>
+      // Authorization: <token>
+      if (authHeader.startsWith('Bearer ')) {
+        token = authHeader.substring(7).trim();
+      } else {
+        token = authHeader.trim();
+      }
+
+      if (!token) {
+        throw new UnauthorizedException('Missing access token');
+      }
+
+      const decoded = verifyAccessToken(token);
       if (!decoded) {
         throw new UnauthorizedException('Invalid token');
       }

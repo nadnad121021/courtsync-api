@@ -28,6 +28,10 @@ app.get('/health', (req: Request, res: Response) => {
 app.use('/api/users', loadVersionedRoutes('users'));
 app.use('/api/auth', loadVersionedRoutes('auth'));
 app.use('/api/venues', loadVersionedRoutes('venues'));
+app.use('/api/bookings', loadVersionedRoutes('bookings'));
+app.use('/api/courts', loadVersionedRoutes('courts'));
+app.use('/api/payments', loadVersionedRoutes('payments'));
+app.use('/api/notifications', loadVersionedRoutes('notifications'));
 // add more modules here
 
 // --- 404 Handler ---

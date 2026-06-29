@@ -12,14 +12,19 @@ class VenueService {
     });
   }
 
-  async create(payload: CreateVenueDto) {
-    const data = VenueRepository.create(payload as any);
+  async create(payload: CreateVenueDto, userId: string) {
+    const data = VenueRepository.create({
+      ...(payload as any),
+      ownerId: userId
+    });
 
     return VenueRepository.save(data);
   }
 
-  async update(id: string, payload: UpdateVenueDto) {
-    await VenueRepository.update(id, payload as any);
+  async update(id: string, payload: UpdateVenueDto, userId: string) {
+    await VenueRepository.update(id, {
+      ...(payload as any)
+    });
 
     return this.findById(id);
   }

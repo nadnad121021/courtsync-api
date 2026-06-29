@@ -3,7 +3,11 @@ import { CreateCourtDto, UpdateCourtDto } from './court.dto';
 
 class CourtService {
   async findAll() {
-    return CourtRepository.find();
+    return CourtRepository.find({
+      order: {
+        createdAt: 'DESC',
+      },
+    });
   }
 
   async findById(id: string) {
@@ -12,10 +16,19 @@ class CourtService {
     });
   }
 
-  async create(payload: CreateCourtDto) {
-    const data = CourtRepository.create(payload);
+  async findByVenueId(venueId: string) {
+    return CourtRepository.find({
+      where: { venueId },
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+  }
 
-    return CourtRepository.save(data);
+  async create(payload: CreateCourtDto) {
+    const court = CourtRepository.create(payload);
+
+    return CourtRepository.save(court);
   }
 
   async update(id: string, payload: UpdateCourtDto) {

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import venueService from './venue.service';
+import { RequestWithUser } from '@modules/auth/auth.interface';
 
 class VenueController {
   async getAll(req: Request, res: Response, next: NextFunction) {
@@ -28,9 +29,9 @@ class VenueController {
     }
   }
 
-  async create(req: Request, res: Response, next: NextFunction) {
+  async create(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
-      const data = await venueService.create(req.body);
+      const data = await venueService.create(req.body, req.user?.id as string);
 
       return res.status(201).json({
         success: true,
@@ -41,9 +42,9 @@ class VenueController {
     }
   }
 
-  async update(req: Request, res: Response, next: NextFunction) {
+  async update(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
-      const data = await venueService.update((req as any).params.id, req.body);
+      const data = await venueService.update((req as any).params.id, req.body, req.user?.id as string);
 
       return res.json({
         success: true,

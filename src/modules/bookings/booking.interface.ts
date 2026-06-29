@@ -13,19 +13,19 @@ export interface IBooking {
   updatedAt: Date;
 }
 
-export type BookingStatus =
-  | 'PENDING'
-  | 'CONFIRMED'
-  | 'CANCELLED'
-  | 'COMPLETED'
-  | 'NO_SHOW';
+export enum BookingStatus {
+  PENDING = 'PENDING',
+  CONFIRMED = 'CONFIRMED',
+  CANCELLED = 'CANCELLED',
+  COMPLETED = 'COMPLETED',
+}
 
-export type PaymentStatus =
-  | 'UNPAID'
-  | 'PENDING'
-  | 'PAID'
-  | 'FAILED'
-  | 'REFUNDED';
+export enum PaymentStatus {
+  UNPAID = 'UNPAID',
+  PAID = 'PAID',
+  FAILED = 'FAILED',
+  REFUNDED = 'REFUNDED',
+}
 
 export interface ICreateBooking {
   playerId: string;

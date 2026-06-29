@@ -1,15 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import notificationService from '../notification.service';
 
 class NotificationController {
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await notificationService.findAll();
-
-      return res.json({
-        success: true,
-        data,
-      });
+      return res.json({ success: true, data });
     } catch (error) {
       next(error);
     }
@@ -17,12 +13,17 @@ class NotificationController {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await notificationService.findById((req as any).params.id);
+      const data = await notificationService.findById(req.params.id as any);
+      return res.json({ success: true, data });
+    } catch (error) {
+      next(error);
+    }
+  }
 
-      return res.json({
-        success: true,
-        data,
-      });
+  async getByUserId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await notificationService.findByUserId(req.params.userId as any);
+      return res.json({ success: true, data });
     } catch (error) {
       next(error);
     }
@@ -31,11 +32,7 @@ class NotificationController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await notificationService.create(req.body);
-
-      return res.status(201).json({
-        success: true,
-        data,
-      });
+      return res.status(201).json({ success: true, data });
     } catch (error) {
       next(error);
     }
@@ -43,12 +40,35 @@ class NotificationController {
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await notificationService.update((req as any).params.id, req.body);
+      const data = await notificationService.update(req.params.id as any, req.body);
+      return res.json({ success: true, data });
+    } catch (error) {
+      next(error);
+    }
+  }
 
-      return res.json({
-        success: true,
-        data,
-      });
+  async markAsSent(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await notificationService.markAsSent(req.params.id as any);
+      return res.json({ success: true, data });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async markAsRead(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await notificationService.markAsRead(req.params.id as any);
+      return res.json({ success: true, data });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async markAsFailed(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await notificationService.markAsFailed(req.params.id as any);
+      return res.json({ success: true, data });
     } catch (error) {
       next(error);
     }
@@ -56,7 +76,7 @@ class NotificationController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      await notificationService.delete((req as any).params.id);
+      await notificationService.delete(req.params.id as any);
 
       return res.json({
         success: true,

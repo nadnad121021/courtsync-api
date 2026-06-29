@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import courtService from '../court.service';
 
 class CourtController {
@@ -17,7 +17,20 @@ class CourtController {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await courtService.findById((req as any).params.id);
+      const data = await courtService.findById(req.params.id as any);
+
+      return res.json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getByVenueId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await courtService.findByVenueId(req.params.venueId as any);
 
       return res.json({
         success: true,
@@ -43,7 +56,7 @@ class CourtController {
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await courtService.update((req as any).params.id, req.body);
+      const data = await courtService.update(req.params.id as any, req.body);
 
       return res.json({
         success: true,
@@ -56,7 +69,7 @@ class CourtController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      await courtService.delete((req as any).params.id);
+      await courtService.delete(req.params.id as any);
 
       return res.json({
         success: true,

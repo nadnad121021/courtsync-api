@@ -4,6 +4,10 @@ import { User } from '@modules/users/user.entity';
 import { DataSource } from 'typeorm';
 import { Client } from 'pg';
 import { Venue } from '@modules/venues/venue.entity';
+import { Booking } from '@modules/bookings/booking.entity';
+import { Court } from '@modules/courts/court.entity';
+import { Payment } from '@modules/payments/payment.entity';
+import { Notification } from '@modules/notifications/notification.entity';
 
 const dbConfig = getDatabaseConfig();
 const nodeEnv = dbConfig.nodeEnv;
@@ -11,7 +15,7 @@ const nodeEnv = dbConfig.nodeEnv;
 const baseOptions = {
   synchronize: dbConfig.synchronize,
   logging: dbConfig.logging,
-  entities: [User,Venue],
+  entities: [User,Venue,Booking,Court,Payment,Notification],
   migrations: nodeEnv === 'development'
     ? ['src/db/migrations/**/*.ts']
     : ['dist/db/migrations/**/*.js'],
