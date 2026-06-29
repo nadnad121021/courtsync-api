@@ -17,7 +17,7 @@ const nodeEnv = dbConfig.nodeEnv;
 const baseOptions = {
   synchronize: dbConfig.synchronize,
   logging: dbConfig.logging,
-  entities: [User,Venue,Booking,Court,Payment,Notification,Role,Permission],
+  entities: [User, Venue, Booking, Court, Payment, Notification, Role, Permission],
   migrations: nodeEnv === 'development'
     ? ['src/db/migrations/**/*.ts']
     : ['dist/db/migrations/**/*.js'],
@@ -38,6 +38,7 @@ if (dbConfig.type === 'mongodb') {
     useUnifiedTopology: true,
   };
 } else {
+  const useSSL = dbConfig.ssl || false;
   dataSourceOptions = {
     ...baseOptions,
     type: dbConfig.type,
@@ -46,40 +47,19 @@ if (dbConfig.type === 'mongodb') {
     username: dbConfig.username,
     password: dbConfig.password,
     database: dbConfig.database,
-    url: dbConfig.url,
-    ssl: nodeEnv === 'production'
-    ? {
-        rejectUnauthorized: false,
+    url: dbConfig.url || undefined,
+    ssl: useSSL
+      ? { rejectUnauthorized: false }
+      : false,
+    extra: useSSL
+      ? {
+        ssl: {
+          rejectUnauthorized: false,
+        },
       }
-    : false,
+      : undefined,
     migrationsRun: nodeEnv === 'production', // Automatically run migrations in production
   };
-}
-
-export async function createDatabaseIfNotExists() {
-  if (dbConfig.type !== 'postgres') return;
-
-  const client = new Client({
-    host: dbConfig.host,
-    port: dbConfig.port,
-    user: dbConfig.username,
-    password: dbConfig.password,
-    database: 'postgres',
-  });
-
-  await client.connect();
-
-  const result = await client.query(
-    `SELECT 1 FROM pg_database WHERE datname = $1`,
-    [dbConfig.database]
-  );
-
-  if (result.rowCount === 0) {
-    await client.query(`CREATE DATABASE "${dbConfig.database}"`);
-    console.log(`Database "${dbConfig.database}" created`);
-  }
-
-  await client.end();
 }
 
 export const AppDataSource = new DataSource(dataSourceOptions);

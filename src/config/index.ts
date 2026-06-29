@@ -16,6 +16,7 @@ export interface DatabaseConfig {
   url?: string;
   synchronize: boolean;
   logging: boolean;
+  ssl?: boolean;
 }
 
 export const getDatabaseConfig = (): DatabaseConfig => {
@@ -23,11 +24,13 @@ export const getDatabaseConfig = (): DatabaseConfig => {
   const nodeEnv = process.env.NODE_ENV || 'development';
   const dbSync = process.env.DB_SYNC === 'false';
   const dbLogging = process.env.DB_LOGGING === 'true';
+  const dbSsl = process.env.DB_SSL === 'true' || nodeEnv === 'production'; // Enable SSL in production by default
 
   const baseConfig = {
     nodeEnv,
     synchronize: false, // Always set to false in production for safety
     logging: dbLogging,
+    ssl:dbSsl
   };
 
   // Use DATABASE_URL if provided (takes precedence)
@@ -111,7 +114,7 @@ const config: AppConfig = {
     port: Number(process.env.REDIS_PORT) || 6379,
     password: process.env.REDIS_PASSWORD || undefined,
   },
-  corsOrigin: process.env.CORS_ORIGIN || '*',
+  corsOrigin: process.env.CORS_ORIGIN || '*'
 };
 const  dbConfig = getDatabaseConfig();
 const envVariables = [
@@ -129,7 +132,8 @@ const envVariables = [
   { name: 'JWT_REFRESH_SECRET', value: config.jwt.refreshSecret },
   { name: 'JWT_ACCESS_EXPIRES_IN', value: config.jwt.accessExpiresIn },
   { name: 'JWT_REFRESH_EXPIRES_IN', value: config.jwt.refreshExpiresIn },
-  { name: 'CORS_ORIGIN', value: config.corsOrigin }
+  { name: 'CORS_ORIGIN', value: config.corsOrigin },
+  { name: 'SSL', value: dbConfig.ssl }
 ]
 if(config.enableCache){
   envVariables.push({ name: 'REDIS_HOST', value: config.redis?.host || 'N/A' });

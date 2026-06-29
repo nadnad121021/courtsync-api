@@ -1,5 +1,5 @@
 import app from './app';
-import { AppDataSource, createDatabaseIfNotExists } from './db/data-source';
+import { AppDataSource } from './db/data-source';
 import config from '@config';
 import logger from '@core/logger';
 
@@ -7,11 +7,7 @@ const PORT = Number(config.port) || 4000;
 
 async function bootstrap() {
   try {
-    // Local development only
-    if (config.nodeEnv === 'development') {
-      await createDatabaseIfNotExists();
-    }
-
+   
     await AppDataSource.initialize();
 
     logger.info('Database connection established successfully.');
