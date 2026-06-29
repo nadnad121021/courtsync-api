@@ -17,7 +17,7 @@ class PermissionController {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await permissionService.findById(req.params.id);
+      const data = await permissionService.findById(req.params.id as any);
 
       return res.json({
         success: true,
@@ -43,7 +43,7 @@ class PermissionController {
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await permissionService.update(req.params.id, req.body);
+      const data = await permissionService.update(req.params.id as any, req.body);
 
       return res.json({
         success: true,
@@ -56,7 +56,7 @@ class PermissionController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      await permissionService.delete(req.params.id);
+      await permissionService.delete(req.params.id as any);
 
       return res.json({
         success: true,
