@@ -1,4 +1,4 @@
-import express  from 'express';
+import express from 'express';
 import type { Request, Response } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -18,13 +18,31 @@ app.use(corsMiddleware);
 
 // --- Health check route ---
 app.get('/health', (req: Request, res: Response) => {
-  res.json({ 
-    status: 'ok', 
-    timestamp: new Date().toISOString() , 
-    about: `This is a sample API built with Express and TypeScript. 
-    It demonstrates versioned routing, error handling, and basic middleware usage. 
-    This API is deployed on AWS to practice CI/CD pipelines and containerization.
-    ` });
+  res.json({
+    status: 'ok',
+    service: 'CourtSync API',
+    timestamp: new Date().toISOString(),
+    version: '1.0.0',
+    about: 'REST API built with Node.js, Express, and TypeScript, featuring JWT authentication, PostgreSQL, Redis caching, Docker containerization, and automated AWS deployment through GitHub Actions.',
+    technologies: {
+      language: ['TypeScript'],
+      runtime: ['Node.js'],
+      framework: ['Express.js'],
+      database: ['PostgreSQL'],
+      orm: ['TypeORM'],
+      cache: ['Redis'],
+      authentication: ['JWT', 'bcrypt'],
+      api: ['REST API', 'Swagger / OpenAPI'],
+      devops: [
+        'Docker',
+        'GitHub Actions',
+        'AWS ECS',
+        'AWS ECR',
+        'Amazon RDS',
+      ],
+      tooling: ['pnpm', 'ESLint', 'Prettier'],
+    }
+  });
 });
 
 // --- Feature Routes ---
