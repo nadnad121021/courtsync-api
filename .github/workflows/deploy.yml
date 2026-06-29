@@ -7,12 +7,45 @@ on:
 
 jobs:
   deploy:
-    name: Build and Deploy
+    name: Build Test and Deploy
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # Setup pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      # Install dependencies
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Optional: Lint
+      # - name: Run ESLint
+      #   run: pnpm lint
+
+      # Optional: Type Check
+      - name: Run Type Check
+        run: pnpm typecheck
+
+      # Run Unit Tests
+      - name: Run Tests
+        run: pnpm test
+
+      ###################################################
+      # Only continue if all checks above passed
+      ###################################################
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
