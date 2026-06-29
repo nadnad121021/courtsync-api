@@ -41,6 +41,9 @@ export const authMiddleware = (required = true) => {
       }
       const userRepo = new UserRepository();
       const user = await userRepo.findById(decoded.userData.id);
+      if(!user){
+         throw new UnauthorizedException('User not found');
+      }
       console.log("🚀 ~ authMiddleware ~ user:", user)
       req.user = user;
       req.token = authHeader;

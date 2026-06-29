@@ -37,13 +37,13 @@ export class UserService {
       const operator = isPostgres ? 'ILIKE' : 'LIKE';
 
       qb.andWhere(
-        `(user.name ${operator} :search OR user.email ${operator} :search)`,
+        `(user.firstName ${operator} :search OR user.email ${operator} :search OR user.lastName ${operator} :search )`,
         { search: `%${searchKey}%` },
       );
     }
 
     // 🔃 Safe sorting
-    const allowedSortFields = ['createdAt', 'name', 'email'];
+    const allowedSortFields = ['createdAt', 'firstName','lastName','email'];
     const orderBy = allowedSortFields.includes(sortBy)
       ? sortBy
       : 'createdAt';

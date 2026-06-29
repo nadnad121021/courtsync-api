@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { errorMiddleware } from './core/middlewares/error.middleware';
 import { loadVersionedRoutes } from './core/utils/versioned.router';
+import corsMiddleware from '@core/middlewares/cors.middleware';
 
 const app = express();
 
@@ -11,6 +12,9 @@ const app = express();
 app.use(helmet());
 app.use(express.json());
 app.use(morgan('dev'));
+
+// --CORS Middleware---
+app.use(corsMiddleware);
 
 // --- Health check route ---
 app.get('/health', (req: Request, res: Response) => {

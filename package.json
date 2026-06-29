@@ -14,7 +14,8 @@
     "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/db/data-source.ts",
     "test:ci": "jest --runInBand --coverage --passWithNoTests",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed": "ts-node -r tsconfig-paths/register src/db/seeds/seed.ts"
   },
   "keywords": [
     "node",

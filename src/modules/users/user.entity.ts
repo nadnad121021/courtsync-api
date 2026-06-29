@@ -1,3 +1,4 @@
+import { Role } from '@modules/roles/role.entity';
 import { IUser } from '@modules/users/user.interface';
 import { 
   Entity, 
@@ -5,7 +6,9 @@ import {
   Column, 
   CreateDateColumn, 
   UpdateDateColumn, 
-  Index
+  Index,
+  ManyToMany,
+  JoinTable
 } from 'typeorm';
 
 @Entity('users')
@@ -18,16 +21,35 @@ export class User implements IUser {
   id!: string;
 
   @Column()
-  name!: string;
+  firstName!: string;
+
+  @Column()
+  lastName!: string;
 
   @Column({ unique: true })
   email!: string;
 
-  @Column()
+  @Column({ unique: true, nullable: true })
+  phone: string;
+
+  @Column({
+    // select: false,
+  })
   password!: string;
 
   @Column({ default: true })
   isActive!: boolean;
+
+  @Column({ default: false })
+  isVerified!: boolean;
+
+  @ManyToMany(() => Role, role => role.users)
+  @JoinTable({
+    name: 'user_roles',
+    joinColumn: { name: 'userId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'roleId', referencedColumnName: 'id' },
+  })
+  roles!: Role[];
 
   @CreateDateColumn()
   createdAt!: Date;

@@ -1,24 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import bookingService from '../booking.service';
-import { RequestWithUser } from '@modules/auth/auth.interface';
+import permissionService from '../permission.service';
 
-class BookingController {
+class PermissionController {
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await bookingService.findAll();
-
-      return res.json({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-  async getMyBookings(req: RequestWithUser, res: Response, next: NextFunction) {
-    try {
-      const data = await bookingService.findByUserId(req.user?.id || '');
-      console.log("🚀 ~ BookingController ~ getMyBookings ~ data:", data)
+      const data = await permissionService.findAll();
 
       return res.json({
         success: true,
@@ -31,7 +17,7 @@ class BookingController {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await bookingService.findById((req as any).params.id);
+      const data = await permissionService.findById(req.params.id);
 
       return res.json({
         success: true,
@@ -44,7 +30,7 @@ class BookingController {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await bookingService.create(req.body);
+      const data = await permissionService.create(req.body);
 
       return res.status(201).json({
         success: true,
@@ -57,7 +43,7 @@ class BookingController {
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await bookingService.update((req as any).params.id, req.body);
+      const data = await permissionService.update(req.params.id, req.body);
 
       return res.json({
         success: true,
@@ -70,11 +56,11 @@ class BookingController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      await bookingService.delete((req as any).params.id);
+      await permissionService.delete(req.params.id);
 
       return res.json({
         success: true,
-        message: 'Booking deleted successfully',
+        message: 'Permission deleted successfully',
       });
     } catch (error) {
       next(error);
@@ -82,4 +68,4 @@ class BookingController {
   }
 }
 
-export default new BookingController();
+export default new PermissionController();

@@ -8,6 +8,8 @@ import { Booking } from '@modules/bookings/booking.entity';
 import { Court } from '@modules/courts/court.entity';
 import { Payment } from '@modules/payments/payment.entity';
 import { Notification } from '@modules/notifications/notification.entity';
+import { Role } from '@modules/roles/role.entity';
+import { Permission } from '@modules/permissions/permission.entity';
 
 const dbConfig = getDatabaseConfig();
 const nodeEnv = dbConfig.nodeEnv;
@@ -15,13 +17,16 @@ const nodeEnv = dbConfig.nodeEnv;
 const baseOptions = {
   synchronize: dbConfig.synchronize,
   logging: dbConfig.logging,
-  entities: [User,Venue,Booking,Court,Payment,Notification],
+  entities: [User,Venue,Booking,Court,Payment,Notification,Role,Permission],
   migrations: nodeEnv === 'development'
     ? ['src/db/migrations/**/*.ts']
     : ['dist/db/migrations/**/*.js'],
   subscribers: nodeEnv === 'development'
     ? ['src/db/subscribers/**/*.ts']
     : ['dist/db/subscribers/**/*.js'],
+  seeds: nodeEnv === 'development'
+    ? ['src/db/seeds/**/*.ts']
+    : ['dist/db/seeds/**/*.js'],
 };
 
 let dataSourceOptions: any = {};

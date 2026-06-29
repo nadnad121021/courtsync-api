@@ -12,6 +12,7 @@ export class AuthService {
 
     async login(data: LoginDto) {
         const user = await this.repo.findByEmail(data.email);
+        console.log("🚀 ~ AuthService ~ login ~ user:", user)
 
         if (!user) {
             throw new HttpException(401, "Invalid credentials");
@@ -25,11 +26,13 @@ export class AuthService {
         const token = generateAccessToken({ userData:{ id: user.id, email: user.email } });
 
         return {
-            token,
+            accessToken:token,
             user: {
                 id: user.id,
                 email: user.email,
-                name: user.name,
+                firstname: user.firstName,
+                lastname: user.lastName,
+                name: `${user.firstName} ${user.lastName}`,
             },
         };
     }

@@ -92,6 +92,7 @@ export interface AppConfig {
     port: number;
     password?: string;
   };
+  corsOrigin?: string;
 }
 
 const config: AppConfig = {
@@ -109,7 +110,8 @@ const config: AppConfig = {
     host: process.env.REDIS_HOST || 'localhost',
     port: Number(process.env.REDIS_PORT) || 6379,
     password: process.env.REDIS_PASSWORD || undefined,
-  }
+  },
+  corsOrigin: process.env.CORS_ORIGIN || '*',
 };
 const  dbConfig = getDatabaseConfig();
 const envVariables = [
@@ -126,7 +128,8 @@ const envVariables = [
   { name: 'JWT_ACCESS_SECRET', value: config.jwt.accessSecret },
   { name: 'JWT_REFRESH_SECRET', value: config.jwt.refreshSecret },
   { name: 'JWT_ACCESS_EXPIRES_IN', value: config.jwt.accessExpiresIn },
-  { name: 'JWT_REFRESH_EXPIRES_IN', value: config.jwt.refreshExpiresIn }
+  { name: 'JWT_REFRESH_EXPIRES_IN', value: config.jwt.refreshExpiresIn },
+  { name: 'CORS_ORIGIN', value: config.corsOrigin }
 ]
 if(config.enableCache){
   envVariables.push({ name: 'REDIS_HOST', value: config.redis?.host || 'N/A' });

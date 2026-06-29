@@ -16,6 +16,12 @@ class BookingService {
     });
   }
 
+  async findByUserId(id: string) {
+    return BookingRepository.find({
+      where: { userId: id },
+    });
+  }
+
   async create(payload: CreateBookingDto) {
     const booking = BookingRepository.create(payload as any);
 

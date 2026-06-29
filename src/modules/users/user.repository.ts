@@ -12,8 +12,45 @@ export class UserRepository {
     return this.repo.find({ where: { isActive: true, isDeleted: false } });
   }
 
+  // findById(id: string) {
+  //   return this.repo.findOne({ where: { id, isActive: true, isDeleted: false } });
+  // }
+
   findById(id: string) {
-    return this.repo.findOne({ where: { id, isActive: true, isDeleted: false } });
+    return this.repo.findOne({
+      where: { id ,isActive: true , isDeleted: false, isVerified: true },
+      relations: {
+        roles: {
+          permissions: true,
+        },
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        phone: true,
+        isActive: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
+        isDeleted: true,
+        deletedAt: true,
+        deletedBy: true,
+        password: false, // Exclude password from selection
+        roles: {
+          id: true,
+          name: true,
+          description: true,
+
+          permissions: {
+            id: true,
+            code: true,
+            description: true,
+          },
+        },
+  },
+    });
   }
 
   findByEmail(email: string) {

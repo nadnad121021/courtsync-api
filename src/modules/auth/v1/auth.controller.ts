@@ -8,7 +8,7 @@ export class AuthController {
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await this.authService.login(req.body);
-      res.setHeader('authorization', result.token);
+      res.setHeader('authorization', result.accessToken);
       res.status(200).json({ success: true, data: result });
     } catch (error) {
       next(error);

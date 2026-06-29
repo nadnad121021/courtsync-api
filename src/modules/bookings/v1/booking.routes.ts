@@ -5,6 +5,7 @@ import { authMiddleware } from '@core/middlewares/auth.middleware';
 const router = Router();
 
 router.get('/', authMiddleware(), bookingController.getAll);
+router.get('/me', authMiddleware(), bookingController.getMyBookings);
 router.get('/:id', authMiddleware(), bookingController.getById);
 router.post('/', authMiddleware(), bookingController.create);
 router.patch('/:id',authMiddleware(), bookingController.update);
