@@ -1,14 +1,37 @@
-import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength, IsBoolean,IsEnum } from "class-validator";
 
+export enum RegisterAccountType {
+  PLAYER = 'PLAYER',
+  VENUE_OWNER = 'VENUE_OWNER',
+}
 export class RegisterDto {
-  @IsEmail({}, { message: "Email is invalid" })
+  @IsString()
+  @IsNotEmpty()
+  firstName!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  lastName!: string;
+
+  @IsEmail()
   email!: string;
 
-  @IsNotEmpty({ message: "Full name is required" })
-  fullName!: string;
+  @IsString()
+  @IsNotEmpty()
+  phone!: string;
 
-  @MinLength(6, { message: "Password must be at least 6 characters" })
+  @IsEnum(RegisterAccountType)
+  accountType!: RegisterAccountType;
+
+  @IsString()
+  @MinLength(8)
   password!: string;
+
+  @IsString()
+  confirmPassword!: string;
+
+  @IsBoolean()
+  acceptedTerms!: boolean;
 }
 
 export class LoginDto {

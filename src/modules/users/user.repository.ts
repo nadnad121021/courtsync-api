@@ -12,10 +12,6 @@ export class UserRepository {
     return this.repo.find({ where: { isActive: true, isDeleted: false } });
   }
 
-  // findById(id: string) {
-  //   return this.repo.findOne({ where: { id, isActive: true, isDeleted: false } });
-  // }
-
   findById(id: string) {
     return this.repo.findOne({
       where: { id ,isActive: true , isDeleted: false, isVerified: true },

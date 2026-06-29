@@ -29,7 +29,7 @@ export class UserService {
     const qb = this.repo.createQueryBuilder('user');
 
     // 🔒 Soft delete filter (always)
-    qb.where('user.isDeleted = false');
+    qb.where('user.isDeleted = false AND user.isActive = true AND user.isVerified = true');
 
     // 🔍 Search (MySQL + PostgreSQL compatible)
     if (searchKey) {

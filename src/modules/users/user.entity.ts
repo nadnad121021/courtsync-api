@@ -65,4 +65,7 @@ export class User implements IUser {
 
   @Column({ nullable: true })
   deletedBy?: string;
+
+  @Column({ default: true })
+  acceptedTerms?: boolean;
 }

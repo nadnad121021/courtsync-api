@@ -14,6 +14,7 @@ export interface IUser {
     isDeleted:Boolean;
     deletedAt?:Date,
     deletedBy?:string
+    acceptedTerms?: boolean;
 }
 
 export interface IGetUsersFilterQuery extends IQuery {

@@ -25,4 +25,18 @@ export class AuthController {
       next(error);
     }
   };
+
+  register = async(req: Request, res: Response, next: NextFunction)=> {
+  try {
+    const data = await this.authService.register(req.body);
+
+    return res.status(201).json({
+      success: true,
+      message: 'User registered successfully',
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 }
