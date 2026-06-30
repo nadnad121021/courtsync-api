@@ -17,8 +17,8 @@ export class RegisterDto {
   email!: string;
 
   @IsString()
-  @IsNotEmpty()
-  phone!: string;
+  @IsOptional()
+  phone?: string;
 
   @IsEnum(RegisterAccountType)
   accountType!: RegisterAccountType;
@@ -31,7 +31,8 @@ export class RegisterDto {
   confirmPassword!: string;
 
   @IsBoolean()
-  acceptedTerms!: boolean;
+  @IsOptional()
+  acceptedTerms?: boolean;
 }
 
 export class LoginDto {

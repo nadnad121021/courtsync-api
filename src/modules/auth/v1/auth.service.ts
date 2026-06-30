@@ -27,15 +27,14 @@ export class AuthService {
 
         const token = generateAccessToken({ userData: { id: user.id, email: user.email } });
 
+        const clonedUser = {...user}
+        // remove password
+        // @ts-ignore
+        delete clonedUser.password;
+
         return {
             accessToken: token,
-            user: {
-                id: user.id,
-                email: user.email,
-                firstname: user.firstName,
-                lastname: user.lastName,
-                name: `${user.firstName} ${user.lastName}`,
-            },
+            user: clonedUser
         };
     }
 
@@ -57,9 +56,9 @@ export class AuthService {
             throw new Error('Passwords do not match');
         }
 
-        if (!payload.acceptedTerms) {
-            throw new Error('You must accept the terms and privacy policy');
-        }
+        // if (!payload.acceptedTerms) {
+        //     throw new Error('You must accept the terms and privacy policy');
+        // }
 
         const role = await RoleRepository.findOne({
             where: { name: payload.accountType },
@@ -74,10 +73,10 @@ export class AuthService {
         const userData = {
             firstName: payload.firstName,
             lastName: payload.lastName,
-            phone: payload.phone,
+            phone: payload.phone ?? null,
             email,
             password: hashedPassword,
-            acceptedTerms: payload.acceptedTerms,
+            acceptedTerms: payload.acceptedTerms ?? true,
             isVerified: true, // TODO: Implement email verification
             isDeleted: false,
             isActive:true,
@@ -85,11 +84,11 @@ export class AuthService {
         };
 
         if (existingUser && existingUser.isDeleted) {
-            userRepo.merge(existingUser, userData);
+            userRepo.merge(existingUser, userData as any);
             return await userRepo.save(existingUser);
         }
 
-        const user = userRepo.create(userData);
+        const user = userRepo.create(userData as any);
         return await userRepo.save(user);
     }
 }

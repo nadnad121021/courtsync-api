@@ -50,7 +50,41 @@ export class UserRepository {
   }
 
   findByEmail(email: string) {
-    return this.repo.findOneBy({ email });
+    // return this.repo.findOneBy({ email });
+    return this.repo.findOne({
+      where: { email ,isActive: true , isDeleted: false, isVerified: true },
+      relations: {
+        roles: {
+          permissions: true,
+        },
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        phone: true,
+        isActive: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
+        isDeleted: true,
+        deletedAt: true,
+        deletedBy: true,
+        password: true,
+        roles: {
+          id: true,
+          name: true,
+          description: true,
+
+          permissions: {
+            id: true,
+            code: true,
+            description: true,
+          },
+        },
+  },
+    });
   }
 
   create(data: Partial<User>) {

@@ -12,6 +12,12 @@ class VenueService {
     });
   }
 
+  async findByUserId(id: string) {
+    return VenueRepository.find({
+      where: { ownerId:id },
+    });
+  }
+
   async create(payload: CreateVenueDto, userId: string) {
     const data = VenueRepository.create({
       ...(payload as any),

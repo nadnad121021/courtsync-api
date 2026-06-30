@@ -15,6 +15,18 @@ class VenueController {
       next(error);
     }
   }
+  async getMyVenues(req: RequestWithUser, res: Response, next: NextFunction) {
+    try {
+      const data = await venueService.findByUserId(req.user?.id as string);
+
+      return res.json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {

@@ -5,6 +5,7 @@ import {
   UpdateDateColumn,
   Column
 } from 'typeorm';
+import  { VenueStatus } from './venue.interface';
 
 @Entity('venues')
 export class Venue {
@@ -29,20 +30,27 @@ export class Venue {
   @Column()
   province?: string;
 
-  @Column()
+  @Column({nullable:true})
   latitude?: string;
 
-  @Column()
+  @Column({nullable:true})
   longitude?: string;
 
-  @Column()
+  @Column({nullable:true})
   contactNumber?: string;
 
-  @Column()
-  openingTime!: string;
+  @Column({nullable:true})
+  openingTime?: string;
 
-  @Column()
-  closingTime!: string;
+  @Column({
+    type: 'enum',
+    enum: VenueStatus,
+    default: VenueStatus.PENDING,
+  })
+  status!: VenueStatus;
+
+  @Column({nullable:true})
+  closingTime?: string;
 
   @CreateDateColumn()
   createdAt!: Date;

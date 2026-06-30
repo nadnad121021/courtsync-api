@@ -16,7 +16,13 @@ export interface IVenue {
   updatedAt: Date;
 }
 
-export type VenueStatus = 'PENDING' | 'ACTIVE' | 'INACTIVE' | 'REJECTED';
+
+export enum VenueStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  PENDING = 'PENDING',
+  REJECTED = 'REJECTED'
+}
 
 export interface ICreateVenue {
   name: string;
