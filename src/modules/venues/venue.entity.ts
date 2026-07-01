@@ -3,9 +3,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  Column
+  Column,
+  OneToMany
 } from 'typeorm';
 import  { VenueStatus } from './venue.interface';
+import { Court } from '@modules/courts/court.entity';
 
 @Entity('venues')
 export class Venue {
@@ -48,6 +50,9 @@ export class Venue {
     default: VenueStatus.PENDING,
   })
   status!: VenueStatus;
+
+  @OneToMany(() => Court, court => court.venue)
+  courts: Court[];
 
   @Column({nullable:true})
   closingTime?: string;

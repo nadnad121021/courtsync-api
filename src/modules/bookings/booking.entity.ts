@@ -2,14 +2,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { BookingStatus, PaymentStatus } from './booking.interface';
+import { BookingStatus, IBooking, PaymentMethod, PaymentStatus } from './booking.interface';
+import { Court } from '@modules/courts/court.entity';
 
 @Entity('bookings')
-export class Booking {
+export class Booking implements IBooking {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -18,6 +21,15 @@ export class Booking {
 
   @Column({ type: 'uuid' })
   courtId!: string;
+
+  @ManyToOne(() => Court, court => court.bookings, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'courtId' })
+  court: Court;
+
+  @Column({ type: 'text', nullable: true })
+  bookingCode?: string;
 
   @Column({ type: 'date' })
   bookingDate!: string;
@@ -44,6 +56,16 @@ export class Booking {
     default: PaymentStatus.UNPAID,
   })
   paymentStatus!: PaymentStatus;
+
+  @Column({
+    type: 'enum',
+    enum: PaymentMethod,
+    default: PaymentMethod.CASH,
+  })
+  paymentMethod!: PaymentMethod;
+
+  @Column({ type: 'text', nullable: true })
+  notes?: string;
 
   @CreateDateColumn()
   createdAt!: Date;

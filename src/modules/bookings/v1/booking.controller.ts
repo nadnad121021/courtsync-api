@@ -17,12 +17,13 @@ class BookingController {
   }
   async getMyBookings(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
-      const data = await bookingService.findByUserId(req.user?.id || '');
-      console.log("🚀 ~ BookingController ~ getMyBookings ~ data:", data)
+      const data = await bookingService.getBookingsByFilter({
+        ownerId: req.user?.id || '',
+      });
 
       return res.json({
         success: true,
-        data,
+        ...data
       });
     } catch (error) {
       next(error);
@@ -42,9 +43,9 @@ class BookingController {
     }
   }
 
-  async create(req: Request, res: Response, next: NextFunction) {
+  async create(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
-      const data = await bookingService.create(req.body);
+      const data = await bookingService.create(req.body, req.user?.id || '');
 
       return res.status(201).json({
         success: true,

@@ -54,6 +54,7 @@ app.use('/api/bookings', loadVersionedRoutes('bookings'));
 app.use('/api/courts', loadVersionedRoutes('courts'));
 app.use('/api/payments', loadVersionedRoutes('payments'));
 app.use('/api/notifications', loadVersionedRoutes('notifications'));
+app.use('/api/court-availability', loadVersionedRoutes('courtAvailability'));
 // add more modules here
 
 // --- 404 Handler ---

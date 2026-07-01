@@ -9,7 +9,7 @@ import { CreateBookingDto,UpdateBookingDto } from '../booking.dto';
 const router = Router();
 
 router.get('/', authMiddleware(), requirePermissions(PERMISSIONS.BOOKINGS_READ), bookingController.getAll);
-router.get('/me', authMiddleware(), requirePermissions(PERMISSIONS.BOOKINGS_READ), bookingController.getMyBookings);
+router.get('/own', authMiddleware(), requirePermissions(PERMISSIONS.BOOKINGS_READ), bookingController.getMyBookings);
 router.get('/:id', authMiddleware(), requirePermissions(PERMISSIONS.BOOKINGS_READ), bookingController.getById);
 router.post('/', authMiddleware(), requirePermissions(PERMISSIONS.BOOKINGS_CREATE),validateDto(CreateBookingDto), bookingController.create);
 router.patch('/:id', authMiddleware(), requirePermissions(PERMISSIONS.BOOKINGS_UPDATE),validateDto(UpdateBookingDto,true), bookingController.update);

@@ -1,3 +1,5 @@
+import { IQuery } from "@core/interfaces/common.interface";
+
 export enum SportType {
   BASKETBALL = 'BASKETBALL',
   BADMINTON = 'BADMINTON',
@@ -24,4 +26,11 @@ export interface ICourt {
   status: CourtStatus;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IGetCourtsFilterQuery extends IQuery {
+    searchKey?: string;
+    status?: CourtStatus | 'ALL';
+    sportType?: SportType | 'ALL';
+    ownerId?: string;
 }

@@ -1,3 +1,5 @@
+import { IQuery } from "@core/interfaces/common.interface";
+
 export interface IVenue {
   id: string;
   ownerId: string;
@@ -39,4 +41,10 @@ export interface ICreateVenue {
 
 export interface IUpdateVenue extends Partial<ICreateVenue> {
   status?: VenueStatus;
+}
+
+export interface IGetVenuesFilterQuery extends IQuery {
+    searchKey?: string;
+    status?: VenueStatus | 'ALL';
+    ownerId?: string;
 }

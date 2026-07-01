@@ -10,6 +10,7 @@ import { Payment } from '@modules/payments/payment.entity';
 import { Notification } from '@modules/notifications/notification.entity';
 import { Role } from '@modules/roles/role.entity';
 import { Permission } from '@modules/permissions/permission.entity';
+import { CourtAvailability } from '@modules/courtAvailability/courtAvailability.entity';
 
 const dbConfig = getDatabaseConfig();
 const nodeEnv = dbConfig.nodeEnv;
@@ -17,7 +18,7 @@ const nodeEnv = dbConfig.nodeEnv;
 const baseOptions = {
   synchronize: dbConfig.synchronize,
   logging: dbConfig.logging,
-  entities: [User, Venue, Booking, Court, Payment, Notification, Role, Permission],
+  entities: [User, Venue, Booking, Court, Payment, Notification, Role, Permission , CourtAvailability],
   migrations: nodeEnv === 'development'
     ? ['src/db/migrations/**/*.ts']
     : ['dist/db/migrations/**/*.js'],

@@ -9,11 +9,12 @@ import { CreateCourtDto, UpdateCourtDto } from '../court.dto';
 
 const router = Router();
 
-router.get('/',authMiddleware(), requirePermissions(PERMISSIONS.VENUES_READ), courtController.getAll);
-router.get('/venue/:venueId',authMiddleware(), requirePermissions(PERMISSIONS.VENUES_READ), courtController.getByVenueId);
-router.get('/:id',authMiddleware(), requirePermissions(PERMISSIONS.VENUES_READ), courtController.getById);
-router.post('/', authMiddleware(), requirePermissions(PERMISSIONS.VENUES_CREATE),validateDto(CreateCourtDto), courtController.create);
-router.patch('/:id', authMiddleware(), requirePermissions(PERMISSIONS.VENUES_UPDATE),validateDto(UpdateCourtDto,true), courtController.update);
-router.delete('/:id', authMiddleware(), requirePermissions(PERMISSIONS.VENUES_DELETE), courtController.delete);
+router.get('/',authMiddleware(), requirePermissions(PERMISSIONS.COURTS_READ), courtController.getAll);
+router.get('/own',authMiddleware(), requirePermissions(PERMISSIONS.COURTS_READ), courtController.getMyCourts);
+router.get('/venue/:venueId',authMiddleware(), requirePermissions(PERMISSIONS.COURTS_READ), courtController.getByVenueId);
+router.get('/:id',authMiddleware(), requirePermissions(PERMISSIONS.COURTS_READ), courtController.getById);
+router.post('/', authMiddleware(), requirePermissions(PERMISSIONS.COURTS_CREATE),validateDto(CreateCourtDto), courtController.create);
+router.patch('/:id', authMiddleware(), requirePermissions(PERMISSIONS.COURTS_UPDATE),validateDto(UpdateCourtDto,true), courtController.update);
+router.delete('/:id', authMiddleware(), requirePermissions(PERMISSIONS.COURTS_DELETE), courtController.delete);
 
 export default router;

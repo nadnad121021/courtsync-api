@@ -4,17 +4,14 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsString,
   IsUUID,
   Matches,
 } from 'class-validator';
 
-import { BookingStatus, PaymentStatus } from './booking.interface';
+import { BookingStatus, PaymentMethod, PaymentStatus } from './booking.interface';
 
 export class CreateBookingDto {
-  @IsUUID()
-  @IsNotEmpty()
-  userId!: string;
-
   @IsUUID()
   @IsNotEmpty()
   courtId!: string;
@@ -22,14 +19,18 @@ export class CreateBookingDto {
   @IsDateString()
   bookingDate!: string;
 
-  @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/)
+  @Matches(/^([01]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?$/)
   startTime!: string;
 
-  @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/)
+  @Matches(/^([01]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?$/)
   endTime!: string;
 
-  @IsNumber()
-  totalAmount!: number;
+  @IsEnum(PaymentMethod)
+  paymentMethod!: PaymentMethod;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
 }
 
 export class UpdateBookingDto {

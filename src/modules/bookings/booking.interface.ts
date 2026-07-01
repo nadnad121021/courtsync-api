@@ -1,14 +1,18 @@
+import { IQuery } from "@core/interfaces/common.interface";
+
 export interface IBooking {
   id: string;
-  bookingCode: string;
-  playerId: string;
+  bookingCode?: string;
+  userId: string;
   courtId: string;
-  scheduleDate: string;
+  bookingDate: string;
   startTime: string;
   endTime: string;
   totalAmount: number;
   status: BookingStatus;
   paymentStatus: PaymentStatus;
+  paymentMethod: PaymentMethod;
+  notes?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -22,6 +26,7 @@ export enum BookingStatus {
 
 export enum PaymentStatus {
   UNPAID = 'UNPAID',
+  PENDING = 'PENDING',
   PAID = 'PAID',
   FAILED = 'FAILED',
   REFUNDED = 'REFUNDED',
@@ -42,4 +47,15 @@ export interface ICancelBooking {
   reason?: string;
 }
 
-export type PaymentMethod = 'CASH' | 'GCASH' | 'CARD' | 'BANK_TRANSFER';
+export enum PaymentMethod {
+  CASH = 'CASH',
+  ONLINE = 'ONLINE',
+}
+
+export interface IGetBookingsFilterQuery extends IQuery {
+    searchKey?: string;
+    status?: BookingStatus | 'ALL';
+    ownerId?: string;
+    bookingDate?: string;
+    sportType?: string | 'ALL';
+}

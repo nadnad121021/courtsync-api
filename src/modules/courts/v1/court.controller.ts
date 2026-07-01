@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import courtService from '../court.service';
+import courtService from './court.service';
+import { RequestWithUser } from '@modules/auth/auth.interface';
+import { CourtStatus, IGetCourtsFilterQuery, SportType } from '../court.interface';
+import { TSortOrder } from '@core/enums/common.enum';
 
 class CourtController {
   async getAll(req: Request, res: Response, next: NextFunction) {
@@ -36,6 +39,38 @@ class CourtController {
         success: true,
         data,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getMyCourts(req: RequestWithUser, res: Response, next: NextFunction) {
+    try {
+      const { skip, limit, sortBy, sortOrder, searchKey, status, sportType } = req.query;
+      const queryParams: IGetCourtsFilterQuery = {
+        skip: skip ? parseInt(skip as string, 10) : 0,
+        limit: limit ? parseInt(limit as string, 10) : 0,
+        sortBy: sortBy as string,
+        sortOrder: sortOrder as TSortOrder,
+        searchKey: searchKey as string,
+        status: status as CourtStatus,
+        ownerId: req.user?.id as string,
+        sportType: sportType as SportType
+      };
+
+      const courts = await courtService.getCourtsByFilter(queryParams);
+      console.log("🚀 ~ CourtController ~ getMyCourts ~ courts:", courts)
+      res.json(courts);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getAvailability(req: RequestWithUser, res: Response, next: NextFunction) {
+    try {
+      const courts = await courtService.getEffectiveCourtAvailability(req.params.id as any);
+      console.log("🚀 ~ CourtController ~ getAvailability ~ courts:", courts)
+      res.json(courts);
     } catch (error) {
       next(error);
     }
